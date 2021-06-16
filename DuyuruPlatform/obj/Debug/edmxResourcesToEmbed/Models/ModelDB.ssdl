@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="DUYURU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BASLIK" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ICERIK" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DUYURU_TARIHI" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DUYURU_OKUNDUBILGI">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DUYURU_ID" Type="int" Nullable="false" />
+    <Property Name="KULLANICI_ID" Type="int" Nullable="false" />
+    <Property Name="OKUNDU" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KULLANICI_BILGILERI">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AD" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SOYAD" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="TELEFON" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="MAIL" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SIFRE" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="YETKI_GRUP" Type="nvarchar" MaxLength="30" />
+    <Property Name="DUYURU_GRUP" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <Association Name="FK_DUYURU_OKUNDUBILGI">
+    <End Role="DUYURU" Type="Self.DUYURU" Multiplicity="1" />
+    <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DUYURU">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DUYURU_OKUNDUBILGI">
+        <PropertyRef Name="DUYURU_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DUYURU_OKUNDUBILGI_1">
+    <End Role="KULLANICI_BILGILERI" Type="Self.KULLANICI_BILGILERI" Multiplicity="1" />
+    <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KULLANICI_BILGILERI">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DUYURU_OKUNDUBILGI">
+        <PropertyRef Name="KULLANICI_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="DUYURU" EntityType="Self.DUYURU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DUYURU_OKUNDUBILGI" EntityType="Self.DUYURU_OKUNDUBILGI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KULLANICI_BILGILERI" EntityType="Self.KULLANICI_BILGILERI" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DUYURU_OKUNDUBILGI" Association="Self.FK_DUYURU_OKUNDUBILGI">
+      <End Role="DUYURU" EntitySet="DUYURU" />
+      <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DUYURU_OKUNDUBILGI_1" Association="Self.FK_DUYURU_OKUNDUBILGI_1">
+      <End Role="KULLANICI_BILGILERI" EntitySet="KULLANICI_BILGILERI" />
+      <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

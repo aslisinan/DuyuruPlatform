@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DUYURU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BASLIK" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ICERIK" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DUYURU_TARIHI" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DUYURU_OKUNDUBILGI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DUYURU_ID" Type="int" Nullable="false" />
+          <Property Name="KULLANICI_ID" Type="int" Nullable="false" />
+          <Property Name="OKUNDU" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KULLANICI_BILGILERI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SOYAD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TELEFON" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MAIL" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SIFRE" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="YETKI_GRUP" Type="nvarchar" MaxLength="30" />
+          <Property Name="DUYURU_GRUP" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK_DUYURU_OKUNDUBILGI">
+          <End Role="DUYURU" Type="Self.DUYURU" Multiplicity="1" />
+          <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUYURU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DUYURU_OKUNDUBILGI">
+              <PropertyRef Name="DUYURU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUYURU_OKUNDUBILGI_1">
+          <End Role="KULLANICI_BILGILERI" Type="Self.KULLANICI_BILGILERI" Multiplicity="1" />
+          <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KULLANICI_BILGILERI">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DUYURU_OKUNDUBILGI">
+              <PropertyRef Name="KULLANICI_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseModelStoreContainer">
+          <EntitySet Name="DUYURU" EntityType="Self.DUYURU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DUYURU_OKUNDUBILGI" EntityType="Self.DUYURU_OKUNDUBILGI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KULLANICI_BILGILERI" EntityType="Self.KULLANICI_BILGILERI" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DUYURU_OKUNDUBILGI" Association="Self.FK_DUYURU_OKUNDUBILGI">
+            <End Role="DUYURU" EntitySet="DUYURU" />
+            <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUYURU_OKUNDUBILGI_1" Association="Self.FK_DUYURU_OKUNDUBILGI_1">
+            <End Role="KULLANICI_BILGILERI" EntitySet="KULLANICI_BILGILERI" />
+            <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DUYURU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BASLIK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ICERIK" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DUYURU_TARIHI" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="DUYURU_OKUNDUBILGI" Relationship="Self.FK_DUYURU_OKUNDUBILGI" FromRole="DUYURU" ToRole="DUYURU_OKUNDUBILGI" />
+        </EntityType>
+        <EntityType Name="DUYURU_OKUNDUBILGI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DUYURU_ID" Type="Int32" Nullable="false" />
+          <Property Name="KULLANICI_ID" Type="Int32" Nullable="false" />
+          <Property Name="OKUNDU" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DUYURU" Relationship="Self.FK_DUYURU_OKUNDUBILGI" FromRole="DUYURU_OKUNDUBILGI" ToRole="DUYURU" />
+          <NavigationProperty Name="KULLANICI_BILGILERI" Relationship="Self.FK_DUYURU_OKUNDUBILGI_1" FromRole="DUYURU_OKUNDUBILGI" ToRole="KULLANICI_BILGILERI" />
+        </EntityType>
+        <EntityType Name="KULLANICI_BILGILERI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SOYAD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TELEFON" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SIFRE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YETKI_GRUP" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DUYURU_GRUP" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DUYURU_OKUNDUBILGI" Relationship="Self.FK_DUYURU_OKUNDUBILGI_1" FromRole="KULLANICI_BILGILERI" ToRole="DUYURU_OKUNDUBILGI" />
+        </EntityType>
+        <Association Name="FK_DUYURU_OKUNDUBILGI">
+          <End Role="DUYURU" Type="Self.DUYURU" Multiplicity="1" />
+          <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUYURU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DUYURU_OKUNDUBILGI">
+              <PropertyRef Name="DUYURU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUYURU_OKUNDUBILGI_1">
+          <End Role="KULLANICI_BILGILERI" Type="Self.KULLANICI_BILGILERI" Multiplicity="1" />
+          <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KULLANICI_BILGILERI">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DUYURU_OKUNDUBILGI">
+              <PropertyRef Name="KULLANICI_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DUYURU" EntityType="Self.DUYURU" />
+          <EntitySet Name="DUYURU_OKUNDUBILGI" EntityType="Self.DUYURU_OKUNDUBILGI" />
+          <EntitySet Name="KULLANICI_BILGILERI" EntityType="Self.KULLANICI_BILGILERI" />
+          <AssociationSet Name="FK_DUYURU_OKUNDUBILGI" Association="Self.FK_DUYURU_OKUNDUBILGI">
+            <End Role="DUYURU" EntitySet="DUYURU" />
+            <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUYURU_OKUNDUBILGI_1" Association="Self.FK_DUYURU_OKUNDUBILGI_1">
+            <End Role="KULLANICI_BILGILERI" EntitySet="KULLANICI_BILGILERI" />
+            <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities">
+          <EntitySetMapping Name="DUYURU">
+            <EntityTypeMapping TypeName="DatabaseModel.DUYURU">
+              <MappingFragment StoreEntitySet="DUYURU">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BASLIK" ColumnName="BASLIK" />
+                <ScalarProperty Name="ICERIK" ColumnName="ICERIK" />
+                <ScalarProperty Name="DUYURU_TARIHI" ColumnName="DUYURU_TARIHI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DUYURU_OKUNDUBILGI">
+            <EntityTypeMapping TypeName="DatabaseModel.DUYURU_OKUNDUBILGI">
+              <MappingFragment StoreEntitySet="DUYURU_OKUNDUBILGI">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DUYURU_ID" ColumnName="DUYURU_ID" />
+                <ScalarProperty Name="KULLANICI_ID" ColumnName="KULLANICI_ID" />
+                <ScalarProperty Name="OKUNDU" ColumnName="OKUNDU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KULLANICI_BILGILERI">
+            <EntityTypeMapping TypeName="DatabaseModel.KULLANICI_BILGILERI">
+              <MappingFragment StoreEntitySet="KULLANICI_BILGILERI">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AD" ColumnName="AD" />
+                <ScalarProperty Name="SOYAD" ColumnName="SOYAD" />
+                <ScalarProperty Name="TELEFON" ColumnName="TELEFON" />
+                <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+                <ScalarProperty Name="SIFRE" ColumnName="SIFRE" />
+                <ScalarProperty Name="YETKI_GRUP" ColumnName="YETKI_GRUP" />
+                <ScalarProperty Name="DUYURU_GRUP" ColumnName="DUYURU_GRUP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

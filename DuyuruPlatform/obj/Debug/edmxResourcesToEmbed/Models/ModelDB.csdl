@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="DUYURU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BASLIK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ICERIK" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DUYURU_TARIHI" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="DUYURU_OKUNDUBILGI" Relationship="Self.FK_DUYURU_OKUNDUBILGI" FromRole="DUYURU" ToRole="DUYURU_OKUNDUBILGI" />
+  </EntityType>
+  <EntityType Name="DUYURU_OKUNDUBILGI">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DUYURU_ID" Type="Int32" Nullable="false" />
+    <Property Name="KULLANICI_ID" Type="Int32" Nullable="false" />
+    <Property Name="OKUNDU" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DUYURU" Relationship="Self.FK_DUYURU_OKUNDUBILGI" FromRole="DUYURU_OKUNDUBILGI" ToRole="DUYURU" />
+    <NavigationProperty Name="KULLANICI_BILGILERI" Relationship="Self.FK_DUYURU_OKUNDUBILGI_1" FromRole="DUYURU_OKUNDUBILGI" ToRole="KULLANICI_BILGILERI" />
+  </EntityType>
+  <EntityType Name="KULLANICI_BILGILERI">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SOYAD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TELEFON" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SIFRE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="YETKI_GRUP" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="DUYURU_GRUP" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="DUYURU_OKUNDUBILGI" Relationship="Self.FK_DUYURU_OKUNDUBILGI_1" FromRole="KULLANICI_BILGILERI" ToRole="DUYURU_OKUNDUBILGI" />
+  </EntityType>
+  <Association Name="FK_DUYURU_OKUNDUBILGI">
+    <End Role="DUYURU" Type="Self.DUYURU" Multiplicity="1" />
+    <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DUYURU">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DUYURU_OKUNDUBILGI">
+        <PropertyRef Name="DUYURU_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DUYURU_OKUNDUBILGI_1">
+    <End Role="KULLANICI_BILGILERI" Type="Self.KULLANICI_BILGILERI" Multiplicity="1" />
+    <End Role="DUYURU_OKUNDUBILGI" Type="Self.DUYURU_OKUNDUBILGI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KULLANICI_BILGILERI">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DUYURU_OKUNDUBILGI">
+        <PropertyRef Name="KULLANICI_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DatabaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DUYURU" EntityType="Self.DUYURU" />
+    <EntitySet Name="DUYURU_OKUNDUBILGI" EntityType="Self.DUYURU_OKUNDUBILGI" />
+    <EntitySet Name="KULLANICI_BILGILERI" EntityType="Self.KULLANICI_BILGILERI" />
+    <AssociationSet Name="FK_DUYURU_OKUNDUBILGI" Association="Self.FK_DUYURU_OKUNDUBILGI">
+      <End Role="DUYURU" EntitySet="DUYURU" />
+      <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DUYURU_OKUNDUBILGI_1" Association="Self.FK_DUYURU_OKUNDUBILGI_1">
+      <End Role="KULLANICI_BILGILERI" EntitySet="KULLANICI_BILGILERI" />
+      <End Role="DUYURU_OKUNDUBILGI" EntitySet="DUYURU_OKUNDUBILGI" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
